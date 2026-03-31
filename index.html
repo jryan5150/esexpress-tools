@@ -240,8 +240,11 @@
 </div>
 
 <script>
-    // SHA-256 hash of authorized email (jess@esexpressllc.com)
-    const AUTHORIZED_HASH = "a112fd1e348823f2ac69f3b21e86b023147d3f1a8b8c25ebcf501e0ecbf7cb6e";
+    // SHA-256 hashes of authorized emails
+    const AUTHORIZED_HASHES = [
+        "a112fd1e348823f2ac69f3b21e86b023147d3f1a8b8c25ebcf501e0ecbf7cb6e", // jess@esexpressllc.com
+        "ded24b5b4bcddf3e8822d56e0709b5c430e4493c23951f50b0eaa529ca3b5ee8", // jared.reid@lexcom.com
+    ];
 
     async function sha256(message) {
         const msgBuffer = new TextEncoder().encode(message);
@@ -262,7 +265,7 @@
 
         const hash = await sha256(email);
 
-        if (hash === AUTHORIZED_HASH) {
+        if (AUTHORIZED_HASHES.includes(hash)) {
             document.getElementById("verify-section").classList.add("hidden");
             document.getElementById("download-section").classList.remove("hidden");
         } else {
