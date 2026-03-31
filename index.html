@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ES Express — Activity Tracking Setup</title>
+<style>
+    :root {
+        --bg-primary: #0a0c0f;
+        --bg-secondary: #12151a;
+        --bg-card: #1a1d24;
+        --text-primary: #f0f2f5;
+        --text-secondary: #8b92a0;
+        --accent: #3b82f6;
+        --accent-hover: #2563eb;
+        --success: #22c55e;
+        --error: #ef4444;
+        --border: #2a2d35;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+    }
+
+    .container {
+        max-width: 520px;
+        width: 100%;
+    }
+
+    .card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 40px;
+    }
+
+    .logo {
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        margin-bottom: 24px;
+    }
+
+    h1 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        line-height: 1.3;
+    }
+
+    .subtitle {
+        color: var(--text-secondary);
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 32px;
+    }
+
+    .form-group {
+        margin-bottom: 16px;
+    }
+
+    label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin-bottom: 6px;
+    }
+
+    input[type="email"] {
+        width: 100%;
+        padding: 12px 16px;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text-primary);
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    input[type="email"]:focus {
+        border-color: var(--accent);
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background: var(--accent);
+        color: white;
+        width: 100%;
+    }
+
+    .btn-primary:hover {
+        background: var(--accent-hover);
+    }
+
+    .btn-download {
+        background: var(--success);
+        color: white;
+        width: 100%;
+        font-size: 16px;
+        padding: 14px 24px;
+        text-align: center;
+    }
+
+    .btn-download:hover {
+        background: #16a34a;
+    }
+
+    .error-msg {
+        color: var(--error);
+        font-size: 13px;
+        margin-top: 8px;
+        display: none;
+    }
+
+    .hidden { display: none; }
+
+    .download-section {
+        margin-top: 24px;
+    }
+
+    .what-happens {
+        margin-top: 20px;
+        padding: 16px;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.8;
+    }
+
+    .what-happens strong {
+        color: var(--text-primary);
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    code {
+        background: var(--bg-primary);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 13px;
+    }
+
+    .privacy-note {
+        margin-top: 24px;
+        padding: 12px 16px;
+        background: var(--bg-secondary);
+        border-left: 3px solid var(--accent);
+        border-radius: 4px;
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    .footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 12px;
+        color: var(--text-secondary);
+    }
+
+    .footer a {
+        color: var(--accent);
+        text-decoration: none;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <div class="logo">ES Express</div>
+        <h1>Activity Tracking Setup</h1>
+        <p class="subtitle">
+            Installs an activity tracker on your work computer. Tracks which
+            applications and websites you use — no keystrokes, no screenshots,
+            no screen recording. Reports generate automatically on your Desktop.
+        </p>
+
+        <!-- Verification form -->
+        <div id="verify-section">
+            <div class="form-group">
+                <label for="email">Verify your email to continue</label>
+                <input type="email" id="email" placeholder="your@email.com" autocomplete="email">
+                <div class="error-msg" id="error-msg">Email not recognized. Contact Jace if you need access.</div>
+            </div>
+            <button class="btn btn-primary" id="verify-btn" onclick="verifyEmail()">Verify</button>
+        </div>
+
+        <!-- Download section (hidden until verified) -->
+        <div id="download-section" class="download-section hidden">
+            <a href="ESExpress-ActivitySetup.zip" class="btn btn-download" download>
+                Download Setup Package
+            </a>
+
+            <div class="what-happens">
+                <strong>After downloading:</strong>
+                1. Unzip the file<br>
+                2. Double-click <code>Install-ActivityTracker.bat</code><br>
+                3. Follow the prompts (about 2 minutes)<br>
+                4. Done — reports appear on your Desktop daily at 5:30 PM
+            </div>
+        </div>
+
+        <div class="privacy-note">
+            <strong style="color: var(--text-primary); display: inline;">Privacy:</strong>
+            Only tracks which app is in the foreground and which website domain is open.
+            No keystrokes, screenshots, screen recording, microphone, or camera.
+            All data stays on your machine until you share the report.
+        </div>
+    </div>
+
+    <div class="footer">
+        Questions? Contact <a href="mailto:JRyan@Lexcom.com">Jace Ryan</a> · (877) 539-2663
+    </div>
+</div>
+
+<script>
+    // SHA-256 hash of authorized email (jess@esexpressllc.com)
+    const AUTHORIZED_HASH = "a112fd1e348823f2ac69f3b21e86b023147d3f1a8b8c25ebcf501e0ecbf7cb6e";
+
+    async function sha256(message) {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    async function verifyEmail() {
+        const email = document.getElementById("email").value.trim().toLowerCase();
+        const errorMsg = document.getElementById("error-msg");
+
+        if (!email) {
+            errorMsg.textContent = "Please enter your email address.";
+            errorMsg.style.display = "block";
+            return;
+        }
+
+        const hash = await sha256(email);
+
+        if (hash === AUTHORIZED_HASH) {
+            document.getElementById("verify-section").classList.add("hidden");
+            document.getElementById("download-section").classList.remove("hidden");
+        } else {
+            errorMsg.textContent = "Email not recognized. Contact Jace if you need access.";
+            errorMsg.style.display = "block";
+        }
+    }
+
+    // Allow Enter key to submit
+    document.getElementById("email").addEventListener("keypress", function(e) {
+        if (e.key === "Enter") verifyEmail();
+    });
+</script>
+
+</body>
+</html>
